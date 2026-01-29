@@ -20,13 +20,14 @@ body{
   display:none;flex-direction:column;
   align-items:center;justify-content:center;
   text-align:center;padding:24px;
+  overflow-y:auto;
 }
 .scene.active{display:flex;animation:fadeIn 1s}
 
 p{
   font-size:1.1rem;
-  margin:10px 0;
-  min-height:1.4em;
+  margin:4px 0;
+  line-height:1.45;
 }
 
 button{
@@ -126,6 +127,8 @@ button.show{opacity:1;pointer-events:auto}
   <p id="s1l1"></p>
   <p id="s1l2"></p>
   <p id="s1l3"></p>
+  <p id="s1l4"></p>
+  <p id="s1l5"></p>
   <button onclick="goToScene(1)">Let’s begin the journey 💝</button>
 </div>
 
@@ -138,6 +141,8 @@ button.show{opacity:1;pointer-events:auto}
   <p id="s2l1"></p>
   <p id="s2l2"></p>
   <p id="s2l3"></p>
+  <p id="s2l4"></p>
+  <p id="s2l5"></p>
   <button onclick="goToScene(2)">Let's make a wish ✨</button>
 </div>
 
@@ -193,7 +198,9 @@ button.show{opacity:1;pointer-events:auto}
     and you are one of those moments 💖
   </p>
   <p style="margin-top:14px"><strong>Your well-wisher</strong></p>
+  <button id="restartBtn">Start the journey again 🔁</button>
 </div>
+
 
 <script>
 const scenes=document.querySelectorAll('.scene');
@@ -214,24 +221,84 @@ function typeLine(el,text,speed=55,cb){
 }
 
 /* Scene 1 */
-typeLine(s1l1,"Some moments don’t announce themselves,",55,()=>{
-  typeLine(s1l2,"they simply arrive softly,",55,()=>{
-    typeLine(s1l3,"and today is one of those moments 💫",55,()=>{
-      s1.querySelector('button').classList.add("show");
-    });
-  });
-});
+typeLine(
+  s1l1,
+  "Some moments don’t announce themselves loudly. They arrive quietly, gently — almost like a soft pause in time.",
+  40,
+  () => {
+    typeLine(
+      s1l2,
+      "Today is one of those moments. A moment meant to slow you down, even if just for a little while.",
+      40,
+      () => {
+        typeLine(
+          s1l3,
+          "This space exists to celebrate you — not in noise or grand gestures, but in warmth, thought, and intention.",
+          40,
+          () => {
+            typeLine(
+              s1l4,
+              "Life moves fast, but days like this deserve to be felt fully. To be remembered not for what happens, but for how it feels.",
+              40,
+              () => {
+                typeLine(
+                  s1l5,
+                  "So take a breath, let everything else fade, and begin this journey knowing it was made just for you.",
+                  40,
+                  () => {
+                    s1.querySelector("button").classList.add("show");
+                  }
+                );
+              }
+            );
+          }
+        );
+      }
+    );
+  }
+);
+
 
 /* Scene 2 */
 function startScene2(){
-  typeLine(s2l1,"Today is [DATE],",55,()=>{
-    typeLine(s2l2,"and on this day,",55,()=>{
-      typeLine(s2l3,"someone truly special was born 🌸",55,()=>{
-        s2.querySelector('button').classList.add("show");
-      });
-    });
-  });
+  typeLine(
+    s2l1,
+    "Today is [DATE] — a day that carries more meaning than it seems at first glance.",
+    40,
+    () => {
+      typeLine(
+        s2l2,
+        "It marks the beginning of a story that continues to unfold with grace, growth, and quiet strength.",
+        40,
+        () => {
+          typeLine(
+            s2l3,
+            "On this day, the world welcomed someone who would go on to leave warmth in ordinary moments and meaning in simple conversations.",
+            40,
+            () => {
+              typeLine(
+                s2l4,
+                "Every year this date returns as a reminder — not just of time passing, but of presence, resilience, and becoming.",
+                40,
+                () => {
+                  typeLine(
+                    s2l5,
+                    "This is more than a birthday. It’s a celebration of existence, of impact, and of the beautiful journey still ahead.",
+                    40,
+                    () => {
+                      s2.querySelector("button").classList.add("show");
+                    }
+                  );
+                }
+              );
+            }
+          );
+        }
+      );
+    }
+  );
 }
+
 
 /*Music*/
 let musicStarted = false;
@@ -266,6 +333,12 @@ function goToScene(n){
   if(i === 4){
     startCarousel();
   }
+
+  if(i === 5){
+  const btn = document.getElementById("restartBtn");
+  btn.classList.add("show");
+  }
+
 }
 
 
@@ -300,11 +373,26 @@ function startLetter(){
   btn.classList.remove("show");
 
   typeLine(
-    letter,
-    "Dear [NAME] 💕✨\n\nThis day exists because the world needed someone like you. Your kindness, your warmth, and your smile leave traces everywhere 🌸 Never forget how loved you are, today and always 💖",
-    45,
-    ()=>btn.classList.add("show")
-  );
+  letter,
+  `Dear [NAME] 💕✨
+
+This day exists for a reason — not just because time moved forward, but because the world needed someone like you to exist within it. There is something quietly special about the way you show up in life, something that doesn’t demand attention yet leaves a lasting impression. You bring warmth into ordinary moments, and somehow, without trying, make them feel meaningful.
+
+Your kindness has a softness to it that people remember. It shows in the way you listen, in the patience you carry, and in the care you give without expecting anything in return 🌸 Even in moments when you may not see it yourself, the impact you leave behind is real. You make people feel comfortable, understood, and a little more at ease just by being present.
+
+Life isn’t always gentle, and there are days when the weight of everything feels heavier than it should. But through it all, you continue to move forward with quiet strength. You grow, you learn, you adapt — not loudly, not perfectly, but honestly. And that honesty is what makes you so deeply admirable. The effort you put in, the love you give, and the resilience you show do not go unnoticed.
+
+As you step into another year, I hope it meets you with kindness. I hope it brings moments that feel calm and unforced, laughter that comes easily, and days that remind you why your presence matters. May this year protect your peace, nurture your dreams, and give you space to become everything you want to be — at your own pace.
+
+There is so much ahead of you that you haven’t seen yet — moments that will surprise you, lessons that will shape you, and joys that will arrive when you least expect them. I hope you trust yourself through all of it. Trust your instincts, your timing, and your ability to navigate life in a way that feels true to you. You don’t need to rush or compare — your journey is unfolding exactly as it should.
+
+This letter isn’t meant to define you or place expectations on you. It’s simply a reminder. A reminder that you are appreciated, valued, and thought of. That your existence adds something good to the world, and that today is worth celebrating because you are worth celebrating.
+
+Always remember: you are loved, today and always 💖`,
+  45,
+  ()=>btn.classList.add("show")
+);
+
 
   btn.onclick=()=>goToScene(4);
 }
@@ -388,6 +476,72 @@ function confetti(){
 window.addEventListener("click", () => {
   startMusic();
 }, { once: true });
+
+
+document.getElementById("restartBtn")?.addEventListener("click", () => {
+
+  // Hide current scene
+  scenes[i].classList.remove("active");
+
+  // Reset index
+  i = 0;
+
+  // Show first scene
+  scenes[i].classList.add("active");
+
+  // Clear previous text
+  s1l1.textContent = "";
+  s1l2.textContent = "";
+  s1l3.textContent = "";
+  s1l4.textContent = "";
+  s1l5.textContent = "";
+
+
+  // Hide all buttons again
+  document.querySelectorAll("button").forEach(btn=>{
+    btn.classList.remove("show");
+  });
+
+ // Restart typing animation (Scene 1)
+  typeLine(
+  s1l1,
+  "Some moments don’t announce themselves loudly. They arrive quietly, gently — like a soft pause in time.",
+  40,
+  () => {
+    typeLine(
+      s1l2,
+      "Today is one of those moments. A moment meant to slow you down, even if just for a little while.",
+      40,
+      () => {
+        typeLine(
+          s1l3,
+          "This space exists to celebrate you — not through noise or grand gestures, but through warmth, thought, and intention.",
+          40,
+          () => {
+            typeLine(
+              s1l4,
+              "Life moves fast, but days like this deserve to be felt fully. To be remembered not for what happens, but for how it feels.",
+              40,
+              () => {
+                typeLine(
+                  s1l5,
+                  "So take a breath, let everything else fade, and begin this journey knowing it was made just for you.",
+                  40,
+                  () => {
+                    s1.querySelector("button").classList.add("show");
+                  }
+                );
+              }
+            );
+          }
+        );
+      }
+    );
+  }
+);
+});
+
+
 
 </script>
 
