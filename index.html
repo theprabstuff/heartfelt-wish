@@ -106,6 +106,10 @@ button.show{opacity:1;pointer-events:auto}
   }
 }
 
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg)}
+}
+
 </style>
 </head>
 
@@ -122,15 +126,16 @@ button.show{opacity:1;pointer-events:auto}
   <p id="s1l1"></p>
   <p id="s1l2"></p>
   <p id="s1l3"></p>
-  <button onclick="goToScene(1)">Click Here</button>
+  <button onclick="goToScene(1)">Let’s begin the journey 💝</button>
 </div>
 
 <!-- SCENE 2 -->
 <div class="scene" id="s2">
+    <h2>This is a day to remember 📅</h2>
   <p id="s2l1"></p>
   <p id="s2l2"></p>
   <p id="s2l3"></p>
-  <button onclick="goToScene(2)">Click Here</button>
+  <button onclick="goToScene(2)">Let's make a wish ✨</button>
 </div>
 
 <!-- SCENE 3 -->
@@ -153,7 +158,7 @@ button.show{opacity:1;pointer-events:auto}
   </div>
 
   <p id="count"></p>
-  <button id="cakeBtn">Click Here</button>
+  <button id="cakeBtn">Read my letter 💌</button>
 </div>
 
 <!-- SCENE 4 -->
@@ -161,11 +166,12 @@ button.show{opacity:1;pointer-events:auto}
   <div class="letter-box">
     <p id="letter"></p>
   </div>
-  <button id="letterBtn">Click Here</button>
+  <button id="letterBtn">Let's visit our memories 📷🎀</button>
 </div>
 
 <!-- SCENE 5 -->
 <div class="scene" id="s5">
+  <h2>Our memories</h2>
   <div class="carousel-wrapper">
     <span class="arrow" onclick="prevImg()">&#10094;</span>
     <div class="carousel">
@@ -174,7 +180,16 @@ button.show{opacity:1;pointer-events:auto}
     <span class="arrow" onclick="nextImg()">&#10095;</span>
   </div>
 
-  <p style="margin-top:18px">With love,<br>Your well-wisher 💕</p>
+  <button id="finalBtn">Final message 💐</button>
+</div>
+
+<!--SCENE 6-->
+<div class="scene" id="s6">
+  <p>
+    Some moments stay with us forever,<br>
+    and you are one of those moments 💖
+  </p>
+  <p style="margin-top:14px"><strong>Your well-wisher</strong></p>
 </div>
 
 <script>
@@ -232,18 +247,29 @@ function goToScene(n){
   i = n;
   scenes[i].classList.add('active');
 
-  if(i === 1) startScene2();
+  if(i === 1){
+    startScene2();
+    startMusic();
+  }
+
   if(i === 2){
-    startMusic();   // 🎵 STARTS HERE
     startCake();
   }
-  if(i === 3) startLetter();
-  if(i === 4) startCarousel();
+
+  if(i === 3){
+    startLetter();
+  }
+
+  if(i === 4){
+    startCarousel();
+  }
 }
+
 
 
 /* Cake */
 function startCake(){
+  confetti();
   const count=document.getElementById("count");
   const flames=document.querySelectorAll(".flame");
   const btn=document.getElementById("cakeBtn");
@@ -251,10 +277,11 @@ function startCake(){
 
   let n=3;count.textContent=n;
   const t=setInterval(()=>{
-    n--;count.textContent=n>0?n:"🎂";
+    n--;count.textContent=n>0?n:"Make a wish and blow out candle! 🎂";
     if(n<0){
       clearInterval(t);
       flames.forEach(f=>f.style.display="none");
+      confetti(); // 🎉 candles blown
       setTimeout(()=>{
         btn.classList.add("show");
         btn.onclick=()=>goToScene(3);
@@ -289,8 +316,12 @@ const images=[
 let imgIndex=0;
 
 function startCarousel(){
-  document.getElementById("carouselImg").src=images[0];
+  document.getElementById("carouselImg").src = images[0];
+
+  const btn = document.getElementById("finalBtn");
+  btn.classList.add("show");
 }
+
 function nextImg(){
   imgIndex=(imgIndex+1)%images.length;
   document.getElementById("carouselImg").src=images[imgIndex];
@@ -313,6 +344,47 @@ for(let i=0;i<25;i++){
   document.body.appendChild(el);
 }
 
+document.getElementById("finalBtn")?.addEventListener("click", () => {
+   confetti(); // 🎆 final celebration
+   goToScene(5);
+});
+
+function confetti(){
+  for(let i = 0; i < 120; i++){
+    const c = document.createElement("div");
+    c.style.position = "fixed";
+    c.style.width = "8px";
+    c.style.height = "8px";
+    c.style.background = `hsl(${Math.random()*360},80%,70%)`;
+    c.style.zIndex = "999";
+
+    const fromLeft = Math.random() > 0.5;
+    c.style.left = fromLeft ? "-10px" : "100vw";
+    c.style.top = Math.random() * 100 + "vh";
+
+    const x = fromLeft
+      ? Math.random() * 600 + 200
+      : -Math.random() * 600 - 200;
+    const y = Math.random() * 400 - 200;
+
+    c.animate([
+      { transform: "translate(0,0) scale(1)" },
+      { transform: `translate(${x}px, ${y}px) scale(0.8)` }
+    ], {
+      duration: 1200 + Math.random() * 800,
+      easing: "ease-out",
+      fill: "forwards"
+    });
+
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 2000);
+  }
+}
+
+
+window.addEventListener("click", () => {
+  startMusic();
+}, { once: true });
 
 </script>
 
