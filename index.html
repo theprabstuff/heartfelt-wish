@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  height:100vh;width:100vw;overflow:hidden;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#fde2e4,#e0f2fe);
+}
+
+.scene{
+  position:absolute;inset:0;
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:24px;
+}
+.scene.active{display:flex;animation:fadeIn 1s}
+
+p{
+  font-size:1.1rem;
+  margin:10px 0;
+  min-height:1.4em;
+}
+
+button{
+  margin-top:28px;
+  padding:12px 34px;
+  border:none;border-radius:30px;
+  background:#ffafcc;color:white;
+  font-size:16px;cursor:pointer;
+  opacity:0;pointer-events:none;
+  transition:opacity 1s;
+}
+button.show{opacity:1;pointer-events:auto}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Cake */
+.cake{width:220px;margin:40px 0;position:relative}
+.layer{height:46px;background:#ffcad4;border-radius:14px;margin-top:4px}
+.frosting{position:absolute;top:0;left:0;right:0;height:14px;background:#fff;border-radius:14px}
+.plate{height:10px;background:#ddd;border-radius:50%;margin-top:8px}
+.candles{position:absolute;top:-42px;left:50%;transform:translateX(-50%);display:flex;gap:22px}
+.candle{width:8px;height:36px;background:#fff;position:relative}
+.flame{width:10px;height:10px;background:orange;border-radius:50%;position:absolute;top:-12px;left:-1px;animation:flicker .5s infinite}
+@keyframes flicker{50%{opacity:.5}}
+
+/* Letter */
+.letter-box{
+  background:#fff;
+  padding:30px;
+  border-radius:18px;
+  max-width:520px;
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
+  font-family:'Patrick Hand';
+  font-size:1.15rem;
+}
+
+/* Carousel */
+.carousel-wrapper{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.carousel{
+  width:260px;
+  height:340px;
+  background:white;
+  padding:10px;
+  box-shadow:0 15px 30px rgba(0,0,0,.25);
+}
+.carousel img{
+  width:100%;height:100%;object-fit:cover;
+}
+.arrow{
+  font-size:28px;
+  cursor:pointer;
+  user-select:none;
+  opacity:.7;
+}
+.arrow:hover{opacity:1}
+
+/* Floating cute elements */
+.floating {
+  position: fixed;
+  top: 110%;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: floatUp linear infinite;
+  z-index: 0;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-140vh);
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Background music (royalty-free, replace later) -->
+<audio id="bgMusic" loop>
+  <source src="relaxing-soft-piano-music-431679.mp3" type="audio/mpeg">
+</audio>
+
+
+<!-- SCENE 1 -->
+<div class="scene active" id="s1">
+  <p id="s1l1"></p>
+  <p id="s1l2"></p>
+  <p id="s1l3"></p>
+  <button onclick="goToScene(1)">Click Here</button>
+</div>
+
+<!-- SCENE 2 -->
+<div class="scene" id="s2">
+  <p id="s2l1"></p>
+  <p id="s2l2"></p>
+  <p id="s2l3"></p>
+  <button onclick="goToScene(2)">Click Here</button>
+</div>
+
+<!-- SCENE 3 -->
+<div class="scene" id="s3">
+  <h1 style="margin-bottom:45px">
+    Happy Birthday <span style="font-family:'Patrick Hand'">[NAME]</span> 🎂
+  </h1>
+
+  <div class="cake">
+    <div class="candles">
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+    </div>
+    <div class="frosting"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="plate"></div>
+  </div>
+
+  <p id="count"></p>
+  <button id="cakeBtn">Click Here</button>
+</div>
+
+<!-- SCENE 4 -->
+<div class="scene" id="s4">
+  <div class="letter-box">
+    <p id="letter"></p>
+  </div>
+  <button id="letterBtn">Click Here</button>
+</div>
+
+<!-- SCENE 5 -->
+<div class="scene" id="s5">
+  <div class="carousel-wrapper">
+    <span class="arrow" onclick="prevImg()">&#10094;</span>
+    <div class="carousel">
+      <img id="carouselImg">
+    </div>
+    <span class="arrow" onclick="nextImg()">&#10095;</span>
+  </div>
+
+  <p style="margin-top:18px">With love,<br>Your well-wisher 💕</p>
+</div>
+
+<script>
+const scenes=document.querySelectorAll('.scene');
+let i=0;
+
+/* Typing animation (slow, line-by-line) */
+function typeLine(el,text,speed=55,cb){
+  let idx=0;
+  el.textContent="";
+  const t=setInterval(()=>{
+    el.textContent+=text[idx];
+    idx++;
+    if(idx>=text.length){
+      clearInterval(t);
+      if(cb) setTimeout(cb,700);
+    }
+  },speed);
+}
+
+/* Scene 1 */
+typeLine(s1l1,"Some moments don’t announce themselves,",55,()=>{
+  typeLine(s1l2,"they simply arrive softly,",55,()=>{
+    typeLine(s1l3,"and today is one of those moments 💫",55,()=>{
+      s1.querySelector('button').classList.add("show");
+    });
+  });
+});
+
+/* Scene 2 */
+function startScene2(){
+  typeLine(s2l1,"Today is [DATE],",55,()=>{
+    typeLine(s2l2,"and on this day,",55,()=>{
+      typeLine(s2l3,"someone truly special was born 🌸",55,()=>{
+        s2.querySelector('button').classList.add("show");
+      });
+    });
+  });
+}
+
+/*Music*/
+let musicStarted = false;
+
+function startMusic(){
+  if(musicStarted) return;
+  const music = document.getElementById("bgMusic");
+  music.volume = 0.7; // soft
+  music.play().catch(()=>{});
+  musicStarted = true;
+}
+
+/* Navigation */
+function goToScene(n){
+  scenes[i].classList.remove('active');
+  i = n;
+  scenes[i].classList.add('active');
+
+  if(i === 1) startScene2();
+  if(i === 2){
+    startMusic();   // 🎵 STARTS HERE
+    startCake();
+  }
+  if(i === 3) startLetter();
+  if(i === 4) startCarousel();
+}
+
+
+/* Cake */
+function startCake(){
+  const count=document.getElementById("count");
+  const flames=document.querySelectorAll(".flame");
+  const btn=document.getElementById("cakeBtn");
+  btn.classList.remove("show");
+
+  let n=3;count.textContent=n;
+  const t=setInterval(()=>{
+    n--;count.textContent=n>0?n:"🎂";
+    if(n<0){
+      clearInterval(t);
+      flames.forEach(f=>f.style.display="none");
+      setTimeout(()=>{
+        btn.classList.add("show");
+        btn.onclick=()=>goToScene(3);
+      },1000);
+    }
+  },1000);
+}
+
+/* Letter */
+function startLetter(){
+  const letter=document.getElementById("letter");
+  const btn=document.getElementById("letterBtn");
+  btn.classList.remove("show");
+
+  typeLine(
+    letter,
+    "Dear [NAME] 💕✨\n\nThis day exists because the world needed someone like you. Your kindness, your warmth, and your smile leave traces everywhere 🌸 Never forget how loved you are, today and always 💖",
+    45,
+    ()=>btn.classList.add("show")
+  );
+
+  btn.onclick=()=>goToScene(4);
+}
+
+/* Carousel */
+const images=[
+  "https://picsum.photos/400/600?1",
+  "https://picsum.photos/400/600?2",
+  "https://picsum.photos/400/600?3",
+  "https://picsum.photos/400/600?4"
+];
+let imgIndex=0;
+
+function startCarousel(){
+  document.getElementById("carouselImg").src=images[0];
+}
+function nextImg(){
+  imgIndex=(imgIndex+1)%images.length;
+  document.getElementById("carouselImg").src=images[imgIndex];
+}
+function prevImg(){
+  imgIndex=(imgIndex-1+images.length)%images.length;
+  document.getElementById("carouselImg").src=images[imgIndex];
+}
+
+const floatingEmojis = ["💖","✨","🌸","💫","🎀","⭐","🩷"];
+
+for(let i=0;i<25;i++){
+  const el = document.createElement("div");
+  el.className = "floating";
+  el.textContent = floatingEmojis[Math.floor(Math.random()*floatingEmojis.length)];
+  el.style.left = Math.random()*100 + "vw";
+  el.style.fontSize = (12 + Math.random()*10) + "px";
+  el.style.animationDuration = (12 + Math.random()*10) + "s";
+  el.style.animationDelay = Math.random()*10 + "s";
+  document.body.appendChild(el);
+}
+
+
+</script>
+
+</body>
+</html>
