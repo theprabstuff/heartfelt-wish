@@ -20,7 +20,6 @@ body{
   display:none;flex-direction:column;
   align-items:center;justify-content:center;
   text-align:center;padding:24px;
-  overflow-y:auto;
 }
 .scene.active{display:flex;animation:fadeIn 1s}
 
@@ -28,7 +27,9 @@ p{
   font-size:1.1rem;
   margin:4px 0;
   line-height:1.45;
+  white-space: pre-line; /* ✅ enables paragraph breaks */
 }
+
 
 button{
   margin-top:28px;
@@ -62,7 +63,10 @@ button.show{opacity:1;pointer-events:auto}
   box-shadow:0 20px 40px rgba(0,0,0,.15);
   font-family:'Patrick Hand';
   font-size:1.15rem;
+  max-height:65vh;
+  overflow-y:auto;
 }
+
 
 /* Carousel */
 .carousel-wrapper{
@@ -124,11 +128,7 @@ button.show{opacity:1;pointer-events:auto}
 
 <!-- SCENE 1 -->
 <div class="scene active" id="s1">
-  <p id="s1l1"></p>
-  <p id="s1l2"></p>
-  <p id="s1l3"></p>
-  <p id="s1l4"></p>
-  <p id="s1l5"></p>
+  <p id="s1text"></p>
   <button onclick="goToScene(1)">Let’s begin the journey 💝</button>
 </div>
 
@@ -138,11 +138,7 @@ button.show{opacity:1;pointer-events:auto}
       <img src="none.gif" alt="Feb 4"
       style="height:1.2em; vertical-align:middle; margin-left:6px;">
     </h2>
-  <p id="s2l1"></p>
-  <p id="s2l2"></p>
-  <p id="s2l3"></p>
-  <p id="s2l4"></p>
-  <p id="s2l5"></p>
+   <p id="s2text"></p>
   <button onclick="goToScene(2)">Let's make a wish ✨</button>
 </div>
 
@@ -193,13 +189,10 @@ button.show{opacity:1;pointer-events:auto}
 
 <!--SCENE 6-->
 <div class="scene" id="s6">
-  <p>
-    Some moments stay with us forever,<br>
-    and you are one of those moments 💖
-  </p>
-  <p style="margin-top:14px"><strong>Your well-wisher</strong></p>
+  <p id="s6text"></p>
   <button id="restartBtn">Start the journey again 🔁</button>
 </div>
+
 
 
 <script>
@@ -222,82 +215,74 @@ function typeLine(el,text,speed=55,cb){
 
 /* Scene 1 */
 typeLine(
-  s1l1,
-  "Some moments don’t announce themselves loudly. They arrive quietly, gently — almost like a soft pause in time.",
-  40,
-  () => {
-    typeLine(
-      s1l2,
-      "Today is one of those moments. A moment meant to slow you down, even if just for a little while.",
-      40,
-      () => {
-        typeLine(
-          s1l3,
-          "This space exists to celebrate you — not in noise or grand gestures, but in warmth, thought, and intention.",
-          40,
-          () => {
-            typeLine(
-              s1l4,
-              "Life moves fast, but days like this deserve to be felt fully. To be remembered not for what happens, but for how it feels.",
-              40,
-              () => {
-                typeLine(
-                  s1l5,
-                  "So take a breath, let everything else fade, and begin this journey knowing it was made just for you.",
-                  40,
-                  () => {
-                    s1.querySelector("button").classList.add("show");
-                  }
-                );
-              }
-            );
-          }
-        );
-      }
-    );
-  }
+  s1text,
+  `Some moments don’t announce themselves loudly.
+They arrive quietly, gently — almost like a soft pause in time.
+
+Today is one of those moments.
+A moment meant to slow you down, even if just for a little while.
+
+This space exists to celebrate you — not in noise or grand gestures,
+but in warmth, thought, and intention.
+
+Life moves fast, but days like this deserve to be felt fully.
+To be remembered not for what happens, but for how it feels.
+
+So take a breath, let everything else fade,
+and begin this journey knowing it was made just for you.`,
+  35,
+  () => s1.querySelector("button").classList.add("show")
 );
+
 
 
 /* Scene 2 */
 function startScene2(){
   typeLine(
-    s2l1,
-    "Today is [DATE] — a day that carries more meaning than it seems at first glance.",
-    40,
-    () => {
-      typeLine(
-        s2l2,
-        "It marks the beginning of a story that continues to unfold with grace, growth, and quiet strength.",
-        40,
-        () => {
-          typeLine(
-            s2l3,
-            "On this day, the world welcomed someone who would go on to leave warmth in ordinary moments and meaning in simple conversations.",
-            40,
-            () => {
-              typeLine(
-                s2l4,
-                "Every year this date returns as a reminder — not just of time passing, but of presence, resilience, and becoming.",
-                40,
-                () => {
-                  typeLine(
-                    s2l5,
-                    "This is more than a birthday. It’s a celebration of existence, of impact, and of the beautiful journey still ahead.",
-                    40,
-                    () => {
-                      s2.querySelector("button").classList.add("show");
-                    }
-                  );
-                }
-              );
-            }
-          );
-        }
-      );
-    }
+    s2text,
+    `Today is [DATE].
+
+On this day, the world quietly became better.
+A new story began — one filled with warmth, growth, and meaning.
+
+This date isn’t just about time passing.
+It’s about presence.
+About everything you’ve been, and everything you’re becoming.
+
+Every year, this day returns as a reminder
+that you matter more than you realize,
+and that your existence leaves a mark far beyond what you see.
+
+This is more than a birthday.
+It’s a celebration of being here.`,
+    35,
+    () => s2.querySelector("button").classList.add("show")
   );
 }
+
+
+/*SCENE 6*/
+function startScene6(){
+  const btn = document.getElementById("restartBtn");
+  btn.classList.remove("show");
+
+  typeLine(
+    s6text,
+    `Some moments stay with us forever.
+Not because they were loud,
+but because they were sincere.
+
+If you ever return to this beginning,
+know that this message will still be here —
+quietly reminding you
+that you are loved, valued, and remembered.
+
+— Your well-wisher`,
+    35,
+    () => btn.classList.add("show")
+  );
+}
+
 
 
 /*Music*/
@@ -335,9 +320,8 @@ function goToScene(n){
   }
 
   if(i === 5){
-  const btn = document.getElementById("restartBtn");
-  btn.classList.add("show");
-  }
+  startScene6();
+}
 
 }
 
@@ -489,13 +473,8 @@ document.getElementById("restartBtn")?.addEventListener("click", () => {
   // Show first scene
   scenes[i].classList.add("active");
 
-  // Clear previous text
-  s1l1.textContent = "";
-  s1l2.textContent = "";
-  s1l3.textContent = "";
-  s1l4.textContent = "";
-  s1l5.textContent = "";
-
+// Clear previous text
+s1text.textContent = "";
 
   // Hide all buttons again
   document.querySelectorAll("button").forEach(btn=>{
@@ -504,41 +483,25 @@ document.getElementById("restartBtn")?.addEventListener("click", () => {
 
  // Restart typing animation (Scene 1)
   typeLine(
-  s1l1,
-  "Some moments don’t announce themselves loudly. They arrive quietly, gently — like a soft pause in time.",
+  s1text,
+  `Some moments don’t announce themselves loudly.
+They arrive quietly, gently — almost like a soft pause in time.
+
+Today is one of those moments.
+A moment meant to slow you down, even if just for a little while.
+
+This space exists to celebrate you — not in noise or grand gestures,
+but in warmth, thought, and intention.
+
+Life moves fast, but days like this deserve to be felt fully.
+To be remembered not for what happens, but for how it feels.
+
+So take a breath, let everything else fade,
+and begin this journey knowing it was made just for you.`,
   40,
-  () => {
-    typeLine(
-      s1l2,
-      "Today is one of those moments. A moment meant to slow you down, even if just for a little while.",
-      40,
-      () => {
-        typeLine(
-          s1l3,
-          "This space exists to celebrate you — not through noise or grand gestures, but through warmth, thought, and intention.",
-          40,
-          () => {
-            typeLine(
-              s1l4,
-              "Life moves fast, but days like this deserve to be felt fully. To be remembered not for what happens, but for how it feels.",
-              40,
-              () => {
-                typeLine(
-                  s1l5,
-                  "So take a breath, let everything else fade, and begin this journey knowing it was made just for you.",
-                  40,
-                  () => {
-                    s1.querySelector("button").classList.add("show");
-                  }
-                );
-              }
-            );
-          }
-        );
-      }
-    );
-  }
+  () => s1.querySelector("button").classList.add("show")
 );
+
 });
 
 
