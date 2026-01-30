@@ -75,12 +75,15 @@ button.show{opacity:1;pointer-events:auto}
   gap:14px;
 }
 .carousel{
-  width:260px;
-  height:340px;
+  width:80vw;          /* takes most of screen width */
+  max-width:420px;     /* but doesn’t get absurdly large */
+  height:60vh;         /* taller, more immersive */
+  max-height:520px;
   background:white;
-  padding:10px;
+  padding:12px;
   box-shadow:0 15px 30px rgba(0,0,0,.25);
 }
+
 .carousel img{
   width:100%;height:100%;object-fit:cover;
 }
